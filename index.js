@@ -36,8 +36,24 @@ async function run() {
       if (req.query?.category) {
         query = { category: req.query.category };
       }
-      console.log(query);
       const result = await toyCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get("/myToys", async (req, res) => {
+      let query = {};
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+      }
+      console.log(query);
+      const result = await toyCollection.find(query).toArray()
+      res.send(result)
+    });
+
+    app.post("/addToy", async (req, res) => {
+      const toyInfo = req.body;
+      console.log(toyInfo);
+      const result = await toyCollection.insertOne(toyInfo);
       res.send(result);
     });
 
