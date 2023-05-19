@@ -40,10 +40,25 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/allToys", async(req,res) => {
-      const result = await toyCollection.find().limit(20).toArray()
-      res.send(result)
-    })
+    app.get("/allToys", async (req, res) => {
+      let query = {};
+      if (req.query?.searchText) {
+        query = { toyName: { $regex: req.query?.searchText, $options: "i" } };
+      }
+
+      const result = await toyCollection
+        .find(query)
+        .limit(20)
+        .project({
+          toyName: 1,
+          category: 1,
+          price: 1,
+          quantity: 1,
+          sellerName: 1,
+        })
+        .toArray();
+      res.send(result);
+    });
 
     app.get("/myToys", async (req, res) => {
       let query = {};
@@ -72,7 +87,6 @@ async function run() {
           description: toyInfo.description,
         },
       };
-      console.log(updatedInfo);
       const result = await toyCollection.updateOne(filter, updatedInfo);
       res.send(result);
     });
