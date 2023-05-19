@@ -40,6 +40,11 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/allToys", async(req,res) => {
+      const result = await toyCollection.find().limit(20).toArray()
+      res.send(result)
+    })
+
     app.get("/myToys", async (req, res) => {
       let query = {};
       if (req.query?.email) {
