@@ -52,13 +52,28 @@ async function run() {
 
     app.post("/addToy", async (req, res) => {
       const toyInfo = req.body;
-      console.log(toyInfo);
       const result = await toyCollection.insertOne(toyInfo);
       res.send(result);
     });
 
+    app.patch("/toys/:id", async (req, res) => {
+      const { id } = req.params;
+      const toyInfo = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedInfo = {
+        $set: {
+          price: toyInfo.price,
+          quantity: toyInfo.quantity,
+          description: toyInfo.description,
+        },
+      };
+      console.log(updatedInfo);
+      const result = await toyCollection.updateOne(filter, updatedInfo);
+      res.send(result);
+    });
+
     app.delete("/toys/:id", async (req, res) => {
-      const {id} = req.params
+      const { id } = req.params;
       const query = { _id: new ObjectId(id) };
       const result = await toyCollection.deleteOne(query);
       res.send(result);
