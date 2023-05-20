@@ -30,6 +30,7 @@ async function run() {
     //await client.connect();
 
     const toyCollection = client.db("toysCollection").collection("toys");
+    const reviewsCollection = client.db("toysCollection").collection("reviews");
 
     app.get("/toys", async (req, res) => {
       let query = {};
@@ -39,6 +40,11 @@ async function run() {
       const result = await toyCollection.find(query).toArray();
       res.send(result);
     });
+
+    app.get("/reviews", async(req,res) => {
+      const result = await reviewsCollection.find().toArray()
+      res.send(result)
+    })
 
     app.get("/allToys", async (req, res) => {
       let query = {};
@@ -68,12 +74,15 @@ async function run() {
     });
 
     app.get("/myToys", async (req, res) => {
+      let sortBy = 1;
       let query = {};
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
       }
-      console.log(query);
-      const result = await toyCollection.find(query).toArray();
+      if (req.query?.sortBy) {
+        sortBy = { price: req.query?.sortBy };
+      }
+      const result = await toyCollection.find(query).sort(sortBy).toArray();
       res.send(result);
     });
 
