@@ -31,6 +31,9 @@ async function run() {
 
     const toyCollection = client.db("toysCollection").collection("toys");
     const reviewsCollection = client.db("toysCollection").collection("reviews");
+    const caresCollection = client
+      .db("toysCollection")
+      .collection("customerCares");
 
     app.get("/toys", async (req, res) => {
       let query = {};
@@ -41,10 +44,15 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/reviews", async(req,res) => {
-      const result = await reviewsCollection.find().toArray()
-      res.send(result)
-    })
+    app.get("/reviews", async (req, res) => {
+      const result = await reviewsCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/cares", async (req, res) => {
+      const result = await caresCollection.find().toArray();
+      res.send(result);
+    });
 
     app.get("/allToys", async (req, res) => {
       let query = {};
