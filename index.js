@@ -60,6 +60,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/toyDetails/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.findOne(query);
+      res.send(result);
+    });
+
     app.get("/myToys", async (req, res) => {
       let query = {};
       if (req.query?.email) {
