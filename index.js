@@ -47,7 +47,6 @@ async function run() {
     app.get("/gallery", async (req, res) => {
       const result = await toyCollection
         .find()
-        .project({ picture: 1 })
         .toArray();
       res.send(result);
     });
