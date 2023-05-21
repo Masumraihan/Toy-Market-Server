@@ -44,6 +44,14 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/gallery", async (req, res) => {
+      const result = await toyCollection
+        .find()
+        .project({ picture: 1 })
+        .toArray();
+      res.send(result);
+    });
+
     app.get("/reviews", async (req, res) => {
       const result = await reviewsCollection.find().toArray();
       res.send(result);
