@@ -107,6 +107,7 @@ async function run() {
       res.send(result);
     });
 
+    // update toy 
     app.patch("/toys/:id", async (req, res) => {
       const { id } = req.params;
       const toyInfo = req.body;
